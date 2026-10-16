@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Food Chain Adventure: Science 4 Week 3</title>
+<style>
+:root{--bg:#e6f7d8;--card:#fff;--ink:#1f3320;--acc:#2e9e4f;--c2:#ffb800;--g1:#2e9e4f;--g2:#ffb800;--ok:#1fb86a;--bad:#e5384b;--soft:#cdeebb;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10241a;--card:#1b3828;--ink:#eaffea;--soft:#2a5239}}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 15% 0,var(--soft),transparent 55%),var(--bg);color:var(--ink);font-family:system-ui,sans-serif;padding:12px;text-align:center;min-height:100vh}
+.wrap{max-width:520px;margin:0 auto}
+h1{font-size:1.55rem;margin:4px 0;background:linear-gradient(90deg,var(--g1),#e8590c);-webkit-background-clip:text;background-clip:text;color:transparent}h2{font-size:1rem;margin:12px 0 4px}
+.sub{opacity:.8;font-size:.85rem}.hide{display:none!important}
+.card{background:var(--card);border-radius:18px;padding:12px;box-shadow:0 3px 10px #0003;margin:8px 0}
+button{font:inherit;cursor:pointer;border:0;border-radius:14px;color:inherit}
+.b{background:var(--acc);color:#fff;padding:12px 20px;font-weight:800;margin:4px}.b.alt{background:var(--soft);color:var(--ink)}.b.big{font-size:1.2rem;padding:15px 30px}
+input,select,textarea{font:inherit;color:inherit;background:var(--soft);border:0;border-radius:10px;padding:8px}
+textarea{width:100%;height:130px;font-size:.76rem;text-align:left}
+.pl{display:inline-flex;gap:4px;align-items:center;margin:3px}.pl input{width:125px}
+.mid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.game{border-radius:20px;padding:16px 6px;color:#fff;font-weight:900;box-shadow:0 5px 0 #0003}
+.game small{display:block;font-weight:500;opacity:.95;font-size:.72rem}
+.game .e{font-size:3.2rem;display:block;animation:bob 1.6s infinite alternate}@keyframes bob{to{transform:translateY(-6px) rotate(6deg) scale(1.08)}}
+.hud{display:flex;justify-content:space-between;font-weight:800;align-items:center;gap:6px}
+.bar{height:10px;background:var(--soft);border-radius:6px;overflow:hidden;margin:5px 0}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--g1),var(--g2));width:100%;transition:width 1s linear}
+.pic{font-size:4.2rem;line-height:1.1}.q{font-size:1.1rem;font-weight:800;margin:6px 0}
+.chain{font-size:1.5rem;min-height:2.2em;margin:6px 0;line-height:1.5}
+.step{display:inline-block;background:var(--soft);padding:12px 12px;font-weight:800;margin:5px;font-size:.95rem}.step.dn{opacity:.25;visibility:hidden}
+.og{display:grid;grid-template-columns:1fr;gap:8px;margin-top:8px}.og button{padding:15px;font-weight:900;font-size:1.05rem;color:#fff;box-shadow:0 4px 0 #0003}.og button:active{transform:translateY(3px)}
+.opts{display:grid;grid-template-columns:1fr;gap:8px;margin-top:8px}.opt{background:var(--soft);padding:12px 8px;font-weight:800}.opt.x{opacity:.35}
+.ok2{outline:4px solid var(--ok)}.no{outline:4px solid var(--bad);opacity:.7}
+.board{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(5,1fr);gap:4px;background:#5b3b1f;padding:6px;border-radius:16px;margin:8px 0}
+.tile{aspect-ratio:1;border-radius:10px;background:var(--card);color:#1f3320;position:relative;display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+.tile small{position:absolute;top:1px;left:4px;font-size:.55rem;opacity:.6}.tile.s{background:#fff3b0}.tile.t{background:#ffd0d0}.tile.f{background:#ffd166}.tile.cur{outline:3px solid var(--c2)}
+.tkn{position:absolute;bottom:-2px;right:0;font-size:.95rem;line-height:1;display:flex;flex-wrap:wrap;justify-content:flex-end;max-width:100%}
+.dice{width:54px;height:54px;border-radius:12px;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:900;box-shadow:0 2px 6px #0003}
+#modal{position:fixed;inset:0;background:#000a;display:flex;align-items:center;justify-content:center;padding:12px;z-index:5}
+#mc{background:var(--card);border-radius:20px;padding:16px;width:100%;max-width:440px;max-height:92vh;overflow:auto}
+.shake{animation:sh .4s}@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.row{display:flex;justify-content:space-between;gap:8px;padding:8px 12px;border-radius:10px;background:var(--soft);margin:5px 0;font-weight:700;text-align:left}.row.w{background:var(--acc);color:#fff}
+.fall{position:fixed;top:-30px;font-size:1.8rem;animation:fl 2.4s linear forwards;pointer-events:none;z-index:9}@keyframes fl{to{transform:translateY(110vh) rotate(360deg)}}
+</style></head><body><div class="wrap">
+
+<div id="home">
+ <div style="font-size:2.2rem">🌿🦗🐸🦅</div>
+ <h1>Food Chain Adventure</h1>
+ <div class="sub">Science 4 · Term 2 Week 3 · Food chains, herbivores, carnivores &amp; omnivores</div>
+ <div class="card"><h2>Players / Teams</h2><select id="pn"><option value="1">1 (Solo)</option><option>2</option><option>3</option><option selected>4</option></select><div id="pnames"></div>
+  <h2>Time per turn</h2><select id="time"><option value="60">1 minute</option><option value="90">1 minute 30 seconds</option><option value="120">2 minutes</option></select>
+  <div class="sub" style="margin-top:6px">In the Board Game, the time sets how long each challenge lasts.</div></div>
+ <div class="mid">
+  <button class="game" data-g="build" style="background:linear-gradient(135deg,#2e9e4f,#0a8f8f)"><span class="e">🔗</span>Chain Builder<small>Put the organisms in order</small></button>
+  <button class="game" data-g="frenzy" style="background:linear-gradient(135deg,#ff8a00,#e5384b)"><span class="e">🍽️</span>Feeding Frenzy<small>Herbivore, carnivore or omnivore?</small></button>
+  <button class="game" data-g="arrow" style="background:linear-gradient(135deg,#7a3cff,#ff2d95)"><span class="e">🕵️</span>Arrow Detective<small>Is the arrow pointing right?</small></button>
+  <button class="game" data-g="board" style="background:linear-gradient(135deg,#00b8d9,#1f6bff)"><span class="e">🎲</span>Jungle Board<small>Roll, race, survive!</small></button>
+ </div>
+ <button class="b alt" id="edit">✏️ Edit chains, animals &amp; questions</button>
+</div>
+
+<div id="editor" class="hide">
+ <h1>✏️ Edit Games</h1>
+ <div class="card">
+ <h2>Food chains: Title | 🌿 food ; 🦗 eater ; 🐸 next eater (food first!)</h2><textarea id="t0" style="height:170px"></textarea>
+ <h2>Animals: Emoji + name | Herbivore, Carnivore or Omnivore | what it eats</h2><textarea id="t1" style="height:170px"></textarea>
+ <h2>Quiz: Topic | Emoji | Question | Correct | Wrong | (Wrong)</h2><textarea id="t2" style="height:170px"></textarea></div>
+ <button class="b" id="save">💾 Save</button><button class="b alt" id="reset">Reset</button><button class="b alt" id="back">← Back</button><div class="sub" id="emsg"></div>
+</div>
+
+<div id="stage" class="hide"></div>
+<div id="end" class="hide"><h1 id="et"></h1><div class="card" id="eb"></div><button class="b" id="again">↺ Play again</button></div>
+</div>
+<div id="modal" class="hide"><div id="mc"></div></div>
+<script>
+const DEF=[`Grass chain|🌿 grass;🦗 grasshopper;🐸 frog
+Rice chain|🌾 rice plant;🐔 chicken;🦅 Philippine eagle
+Forest chain|🍃 leaves;🦌 deer;🐯 tiger
+Farm chain|🌽 corn;🐖 pig;🧑 human
+Water chain|🟢 algae;🐟 small fish;🐠 big fish
+Tree chain|🍃 leaves;🐛 caterpillar;🐦 bird
+Garden chain|🌸 flower nectar;🦋 butterfly;🐦 bird
+Field chain|🌾 rice plant;🐀 rat;🐍 snake
+Backyard chain|🌽 corn;🐔 chicken;🧑 human
+Pond chain|🌱 water plants;🐟 fish;🦩 heron
+Banana chain|🍌 banana plant;🐒 monkey;🦅 Philippine eagle
+Long chain|🌿 grass;🐛 insect;🐸 frog;🐍 snake;🦅 Philippine eagle`,`🐃 Carabao|Herbivore|grass and other plants
+🦅 Philippine eagle|Carnivore|small animals like snakes and mammals
+🐖 Pig|Omnivore|fruits, vegetables and small animals
+🐐 Goat|Herbivore|leaves and grass
+🐈 Cat|Carnivore|fish and other animals
+🦌 Philippine deer|Herbivore|grass, leaves and fruits
+🐔 Chicken|Omnivore|seeds, grains and small insects
+🐯 Tiger|Carnivore|other animals like deer
+🐇 Rabbit|Herbivore|grass and plants
+🐸 Frog|Carnivore|insects like grasshoppers
+🐍 Snake|Carnivore|rats and small animals
+🧑 Human|Omnivore|both plants and animals
+🐛 Caterpillar|Herbivore|leaves
+🦗 Grasshopper|Herbivore|grass
+🐒 Monkey|Omnivore|fruits and insects
+🐠 Big fish|Carnivore|small fish`,`Vocabulary|🌿|An animal that eats plants only is a...|Herbivore|Carnivore|Omnivore
+Vocabulary|🥩|An animal that eats other animals is a...|Carnivore|Herbivore|Omnivore
+Vocabulary|🍽️|An animal that eats both plants and animals is an...|Omnivore|Herbivore|Carnivore
+Vocabulary|💡|Plants only = ___|Herbivore|Carnivore|Omnivore
+Arrow|➡️|In a food chain, the arrow points from the food to the...|Organism that eats it|Organism that sleeps|Sun
+Arrow|🌿🐇|Grass → rabbit. What does the arrow show?|The grass provides food for the rabbit|The rabbit provides food for the grass|The rabbit sleeps on the grass
+Arrow|🌰🐁|Seeds → mouse. What does the arrow show?|The seeds are food for the mouse|The mouse makes the seeds|The arrow shows movement only
+Arrow|🐛🐦|Caterpillar → bird. What does the arrow show?|The caterpillar provides food for the bird|The bird provides food for the caterpillar|They are not connected
+Arrow|🍃🦌|Leaves → deer. What does the arrow show?|The deer eats the leaves|The leaves eat the deer|They are the same organism
+Arrow|🔗|Which statement is correct?|One living thing can provide food for another|Arrows show the biggest organism first|Food chains have no order
+Food Chains|🌿🦗🐸|In grass → grasshopper → frog, what does the grasshopper eat?|Grass|Frog|Eagle
+Food Chains|🍃🐛🐦|In leaves → caterpillar → bird, what eats the leaves?|Caterpillar|Bird|Deer
+Food Chains|🟢🐟🐠|In algae → small fish → big fish, what is the food of the small fish?|Algae|Big fish|Corn
+Food Chains|🌽🐔🧑|In corn → chicken → human, what eats the corn?|Chicken|Human|Algae
+Food Chains|🌸🦋🐦|In flower nectar → butterfly → bird, what provides food for the butterfly?|Flower nectar|Bird|Frog
+Food Chains|🌱|Which organism is the food source at the start of a chain?|A plant|The frog|The eagle
+Types|🐃|The carabao eats grass and plants. It is a...|Herbivore|Carnivore|Omnivore
+Types|🦅|The Philippine eagle eats small animals. It is a...|Carnivore|Herbivore|Omnivore
+Types|🐖|The pig eats vegetables and small animals. It is an...|Omnivore|Herbivore|Carnivore
+Types|🐐|The goat eats grass and leaves. It is a...|Herbivore|Carnivore|Omnivore`];
+const $=id=>document.getElementById(id),R=a=>a[Math.random()*a.length|0],S=a=>[...a].sort(()=>Math.random()-.5);
+const AV=["🦊","🐯","🐼","🦄"],fmt=s=>s==60?"1 minute":s==90?"1 minute 30 seconds":"2 minutes";
+const TYC={Herbivore:["🌿","#2e9e4f"],Carnivore:["🥩","#e5384b"],Omnivore:["🍽️","#1a73ff"]};
+let CHn=[],AN=[],QZ=[],P=[],T=60,SI=0,G="",ct=null,cur=0,busy=false,mult=1;
+function rd(k,d){try{return localStorage.getItem(k)||d}catch(e){return d}}
+function ld(){DEF.forEach((d,n)=>$("t"+n).value=rd("fc"+n,d));parse()}
+const L=(id,m)=>$(id).value.split("\n").map(l=>l.split("|").map(x=>x.trim())).filter(p=>p.length>=m&&p[0]);
+const typ=s=>/^h/i.test(s)?"Herbivore":/^c/i.test(s)?"Carnivore":"Omnivore";
+function parse(){CHn=L("t0",2).map(p=>({t:p[0],s:p[1].split(";").map(x=>x.trim()).filter(Boolean)})).filter(x=>x.s.length>=2);
+ AN=L("t1",2).map(p=>{const m=p[0].split(" ");return{e:m[0],n:m.slice(1).join(" ")||p[0],t:typ(p[1]),r:p[2]||""}});
+ QZ=L("t2",5).map(p=>({c:p[0],p:p[1],q:p[2],a:p[3],w:p.slice(4).filter(Boolean)}))}
+function show(id){["home","editor","stage","end"].forEach(x=>$(x).classList.toggle("hide",x!==id))}
+function stop(){clearInterval(ct)}
+function pn(){const n=+$("pn").value;$("pnames").innerHTML=Array.from({length:n},(_,i)=>`<span class="pl">${AV[i]}<input value="${n==1?"Player":"Team "+(i+1)}" maxlength="14"></span>`).join("")}
+$("pn").onchange=pn;$("edit").onclick=()=>{ld();show("editor")};$("back").onclick=()=>{ld();show("home")};
+$("save").onclick=()=>{parse();try{DEF.forEach((d,n)=>localStorage.setItem("fc"+n,$("t"+n).value))}catch(e){}$("emsg").textContent="✅ Saved!"};
+$("reset").onclick=()=>{try{[0,1,2].forEach(n=>localStorage.removeItem("fc"+n))}catch(e){}ld();$("emsg").textContent="Reset to default."};
+$("again").onclick=()=>show("home");
+function party(){for(let k=0;k<26;k++){const e=document.createElement("div");e.className="fall";e.textContent=["🎉","⭐","🏆","🦋","🐸"][k%5];e.style.left=Math.random()*95+"vw";e.style.animationDelay=Math.random()*.9+"s";document.body.appendChild(e);setTimeout(()=>e.remove(),3400)}}
+document.querySelectorAll(".game").forEach(b=>b.onclick=()=>{parse();const g=b.dataset.g;
+ if(((g=="build"||g=="arrow")&&CHn.length<1)||(g=="frenzy"&&AN.length<3)||(g=="board"&&(CHn.length<1||AN.length<3||QZ.length<3))){alert("Not enough items. Open ✏️ Edit and add more.");return}
+ G=g;T=+$("time").value;mult=T/60;P=[...$("pnames").querySelectorAll("input")].map((e,i)=>({n:e.value||"Team "+(i+1),av:AV[i],sc:0,note:"",pos:0,st:0}));SI=0;cur=0;busy=false;
+ g=="board"?board():ready()});
+const INFO={build:"Put the organisms in the correct order: tap the FOOD first, then who eats it, then who eats that. The arrow points from the food to the eater!",
+ frenzy:"An animal appears with a clue about what it eats. Tap Herbivore, Carnivore or Omnivore. Quick answers earn bonus points!",
+ arrow:"A food chain appears. Is the arrow pointing the right way, FROM the food TO the one that eats it? Spot the wrong ones!"};
+function ready(){const p=P[SI];$("stage").innerHTML=`<h1>${p.av} ${p.n}, get ready!</h1><div class="card"><div style="font-size:3rem">${{build:"🔗",frenzy:"🍽️",arrow:"🕵️"}[G]}</div><div>${INFO[G]}</div><div class="sub" style="margin-top:6px">Time: ${fmt(T)}</div></div><button class="b big" id="go">▶ Go!</button><br><button class="b alt" id="mn">← Menu</button>`;
+ show("stage");$("go").onclick=()=>({build,frenzy,arrow})[G]();$("mn").onclick=()=>{stop();show("home")}}
+function hud(p,x){$("stage").innerHTML=`<div class="hud"><span>${p.av} ${p.n}</span><span>⭐ <span id="sc">0</span></span><span>⏱ <span id="tc"></span></span></div><div class="bar"><i id="tb2"></i></div>${x}`}
+function runT(onEnd){let left=T;clearInterval(ct);const tk=()=>{$("tc").textContent=Math.floor(left/60)+":"+String(left%60).padStart(2,"0");$("tb2").style.width=(left/T*100)+"%";if(left<=0){stop();onEnd();return}left--};tk();ct=setInterval(tk,1000)}
+function fin(score,note){stop();const p=P[SI];p.sc=score;p.note=note||"";if(++SI<P.length)ready();else results()}
+function results(){const r=[...P].sort((a,b)=>b.sc-a.sc),tie=r.length>1&&r[0].sc==r[1].sc;
+ $("et").textContent=P.length==1?"⏰ Time's up!":tie?"🤝 It's a tie!":"🏆 "+r[0].n+" wins!";
+ $("eb").innerHTML=r.map((p,i)=>`<div class="row ${i==0&&!tie?"w":""}"><span>${i+1}. ${p.av} ${p.n}<br><small>${p.note}</small></span><span>⭐ ${p.sc}</span></div>`).join("");show("end");party()}
+const bad=el=>{if(!el)return;el.classList.remove("shake");void el.offsetWidth;el.classList.add("shake")};
+// ---- shared UIs
+function chainUI(box,c,onDone,onWrong){let base;do{base=S(c.s)}while(c.s.length>2&&base.join()==c.s.join());let sel=[];
+ const dr=()=>{box.innerHTML=`<div class="chain">${sel.length?sel.join(" ➡️ "):"👆 Tap the FOOD first!"}</div><div id="cs">${base.map((x,i)=>`<button class="step ${sel.includes(x)?"dn":""}" data-i="${i}">${x}</button>`).join("")}</div>`;
+  box.querySelectorAll(".step").forEach(b=>b.onclick=()=>{const x=base[+b.dataset.i];if(sel.includes(x))return;
+   if(x===c.s[sel.length]){sel.push(x);dr();if(sel.length==c.s.length)onDone()}else{onWrong&&onWrong();bad(box);sel=[];setTimeout(dr,400)}})};dr()}
+function classUI(box,a,onRes){box.innerHTML=`<div class="pic">${a.e}</div><div class="q">${a.n}</div><div class="sub">Eats: ${a.r}</div><div class="og">${Object.keys(TYC).map(k=>`<button data-k="${k}" style="background:${TYC[k][1]}">${TYC[k][0]} ${k}</button>`).join("")}</div>`;let lock=false;
+ box.querySelectorAll("button").forEach(b=>b.onclick=()=>{if(lock)return;lock=true;const ok=b.dataset.k==a.t;b.classList.add(ok?"ok2":"no");onRes(ok)})}
+function quizUI(box,b,onRes){box.innerHTML=`<div class="pic" style="font-size:3rem">${b.p}</div><div class="q">${b.q}</div><div class="opts">${S([b.a,...b.w]).map(o=>`<button class="opt">${o}</button>`).join("")}</div>`;let lock=false;
+ box.querySelectorAll(".opt").forEach(e=>e.onclick=()=>{if(lock)return;const ok=e.textContent==b.a;if(ok){lock=true;e.classList.add("ok2");onRes(true)}else{e.classList.add("no","x");onRes(false,true)}})}
+// ---- 🔗 Chain Builder
+function build(){let d=S(CHn),sc=0,n=0,mis=0;hud(P[SI],`<div class="card"><div class="q">Build the food chain!</div><div class="sub" id="bt"></div><div id="bx"></div></div>`);
+ const nx=()=>{if(!d.length)d=S(CHn);const c=d.pop();mis=0;$("bt").textContent=c.t;chainUI($("bx"),c,()=>{sc+=Math.max(5,15-2*mis);n++;$("sc").textContent=sc;$("bx").insertAdjacentHTML("beforeend",`<div class="q">🎉 Food chain complete!</div>`);setTimeout(()=>{if($("bx"))nx()},900)},()=>mis++)};
+ nx();runT(()=>fin(sc,n+" food chains built"))}
+// ---- 🍽️ Feeding Frenzy
+function frenzy(){let d=S(AN),sc=0,streak=0,ok=0,tot=0,t0=0,lock=false;hud(P[SI],`<div class="hud"><span class="sub">🔥 Streak <b id="sk">0</b></span></div><div class="card" id="fz"></div>`);
+ const nx=()=>{if(!d.length)d=S(AN);const a=d.pop();lock=false;t0=performance.now();classUI($("fz"),a,g=>{if(lock)return;lock=true;tot++;
+  if(g){const fast=performance.now()-t0<3000;streak++;ok++;sc+=10+(fast?5:0)+Math.min(streak-1,5);$("sc").textContent=sc}else{streak=0}$("sk").textContent=streak;
+  $("fz").insertAdjacentHTML("beforeend",`<div class="sub" style="margin-top:6px">${g?"✅":"❌ It is a "+a.t.toLowerCase()+"."}</div>`);setTimeout(()=>{if($("fz"))nx()},g?500:1000)})};
+ nx();runT(()=>fin(sc,ok+"/"+tot+" correct"))}
+// ---- 🕵️ Arrow Detective
+function arrow(){let d=S(CHn),sc=0,ok=0,tot=0,lock=false;hud(P[SI],`<div class="card"><div class="q">Is the arrow pointing the right way?</div><div class="sub">The arrow points FROM the food TO the organism that eats it.</div><div class="chain" id="ac"></div><div class="og" id="ab"></div><div id="am" class="sub" style="min-height:2.4em"></div></div>`);
+ const nx=()=>{if(!d.length)d=S(CHn);const c=d.pop(),rev=Math.random()<.5,items=rev?[...c.s].reverse():c.s;lock=false;$("am").textContent="";
+  $("ac").innerHTML=items.join(" ➡️ ");$("ab").innerHTML=`<button style="background:#2e9e4f">✅ Correct chain</button><button style="background:#e5384b">🔄 Wrong direction!</button>`;
+  $("ab").querySelectorAll("button").forEach((b,i)=>b.onclick=()=>{if(lock)return;lock=true;tot++;const g=(i==0)==!rev;
+   if(g){ok++;sc+=10;$("sc").textContent=sc;$("am").textContent="🎉 Yes!"}else{$("am").innerHTML="❌ Correct chain: "+c.s.join(" ➡️ ");bad($("ac"))}
+   setTimeout(()=>{if($("ac"))nx()},g?600:1700)})};
+ nx();runT(()=>fin(sc,ok+"/"+tot+" correct"))}
+// ---- 🎲 Jungle Board
+const END=29,TY={q:"❓",c:"🍽️",o:"🔗",b:"⭐",x:"🐊"};
+const tileType=i=>i==0?"start":i==END?"fin":i%7==0?"b":i%11==0?"x":["q","c","o","c","q"][i%5];
+function board(){$("stage").innerHTML=`<div class="hud"><div class="dice" id="dice">🎲</div><b id="turn"></b><button class="b" id="roll">🎲 Roll!</button></div><div class="board" id="bd"></div><div class="sub" id="stars"></div><div class="sub" id="toast" style="min-height:1.4em"></div><button class="b alt" id="mn">← Menu</button>`;show("stage");
+ $("mn").onclick=()=>{stop();$("modal").classList.add("hide");show("home")};$("roll").onclick=roll;draw()}
+function draw(){let h="";for(let i=0;i<=END;i++){const r=i/6|0,c=r%2?5-i%6:i%6,t=tileType(i),ic=i==0?"🌱":i==END?"🏆":TY[t],tk=P.filter(p=>p.pos==i).map(p=>p.av).join("");
+  h+=`<div class="tile ${t=="b"?"s":t=="x"?"t":t=="fin"?"f":""} ${P[cur].pos==i?"cur":""}" style="grid-column:${c+1};grid-row:${5-r}"><small>${i}</small>${ic}<span class="tkn">${tk}</span></div>`}
+ $("bd").innerHTML=h;$("turn").textContent=P[cur].av+" "+P[cur].n;$("stars").textContent=P.map(p=>p.av+" ⭐"+p.st).join("  ·  ")}
+const toast=t=>$("toast").textContent=t;
+function roll(){if(busy)return;busy=true;toast("");let n=0;const iv=setInterval(()=>{$("dice").textContent=1+(Math.random()*6|0);if(++n>9){clearInterval(iv);const d=1+(Math.random()*6|0);$("dice").textContent=d;move(P[cur],d,()=>land(P[cur]))}},70)}
+function move(p,s,cb){const dir=s<0?-1:1;let k=Math.abs(s);const iv=setInterval(()=>{if(k<=0||(dir>0&&p.pos>=END)||(dir<0&&p.pos<=0)){clearInterval(iv);cb();return}p.pos+=dir;k--;draw()},260)}
+function land(p){if(p.pos>=END)return win();const t=tileType(p.pos);
+ if(t=="b"){toast("⭐ Bonus! Move 2 forward!");move(p,2,after)}else if(t=="x"){toast("🐊 A crocodile! Back 2!");move(p,-2,after)}else if(t=="start")after();
+ else challenge(t,ok=>{if(ok){p.st++;toast("✅ Great! +1 step & ⭐");move(p,1,after)}else{toast("❌ Oops! Back 2 steps");move(p,-2,after)}})}
+function after(){if(P[cur].pos>=END)return win();cur=(cur+1)%P.length;busy=false;draw()}
+function modal(h){$("mc").innerHTML=h;$("modal").classList.remove("hide")}
+function timer(sec,fail){clearInterval(ct);let l=sec;const b=$("tb");b.style.transition="none";b.style.width="100%";setTimeout(()=>{b.style.transition="width 1s linear"},30);ct=setInterval(()=>{l--;b.style.width=(l/sec*100)+"%";if(l<=0){clearInterval(ct);fail()}},1000)}
+function done(ok,msg,cb){clearInterval(ct);$("mc").insertAdjacentHTML("beforeend",`<div class="q">${ok?"🎉 ":"⏰ "}${msg}</div>`);setTimeout(()=>{$("modal").classList.add("hide");cb(ok)},1100)}
+function challenge(t,cb){let f=false;const fn=(ok,m)=>{if(f)return;f=true;done(ok,m,cb)};
+ modal(`<div class="bar"><i id="tb"></i></div><div id="cb"></div>`);
+ if(t=="q"){const b=R(QZ);quizUI($("cb"),b,(ok,w)=>{if(ok)fn(true,"Correct!");else if(w)fn(false,"Answer: "+b.a)});timer(20*mult,()=>fn(false,"Time's up! Answer: "+b.a))}
+ else if(t=="c"){const a=R(AN);classUI($("cb"),a,ok=>fn(ok,ok?"Correct!":"It is a "+a.t.toLowerCase()));timer(15*mult,()=>fn(false,"Time's up! It is a "+a.t.toLowerCase()))}
+ else{const c=R(CHn);$("cb").innerHTML=`<div class="q">Build the chain: ${c.t}</div><div id="ob"></div>`;chainUI($("ob"),c,()=>fn(true,"Food chain complete!"));timer(40*mult,()=>fn(false,"Time's up!"))}}
+function win(){stop();const r=[...P].sort((a,b)=>b.pos-a.pos||b.st-a.st);
+ $("et").textContent=P.length==1?"🏆 You reached the trophy!":"🏆 "+r[0].n+" wins the race!";
+ $("eb").innerHTML=r.map((p,i)=>`<div class="row ${i==0?"w":""}"><span>${i+1}. ${p.av} ${p.n}</span><span>⭐ ${p.st} · tile ${p.pos}</span></div>`).join("");show("end");party()}
+pn();ld();
+</script></body></html>
